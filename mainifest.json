@@ -2,8 +2,8 @@
   "name": "Telefon Savdo Tizimi",
   "short_name": "Telefon Savdo",
   "description": "Telefon savdosi va ombor boshqaruvi tizimi",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/Savdo/index.html",
+  "scope": "/Savdo/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f172a",
@@ -20,13 +20,7 @@
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
