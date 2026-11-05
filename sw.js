@@ -2,51 +2,45 @@
    SERVICE WORKER — Telefon Savdo (PWA)
    ============================================================ */
 
-const CACHE_NOMI = "telefon-savdo-v1";
+const CACHE_NOMI = "telefon-savdo-v2"; // Versiyani o'zgartirdik (v1 dan v2 ga)
 const STATIK_FAYLLAR = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./app.js",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  "/Savdo/",
+  "/Savdo/index.html",
+  "/Savdo/style.css",
+  "/Savdo/app.js",
+  "/Savdo/manifest.json",
+  "/Savdo/icon-192.png",
+  "/Savdo/icon-512.png"
 ];
 
-// 1. INSTALL (O'rnatish paytida fayllarni keshga yuklash)
+// 1. INSTALL (Fayllarni keshga yuklash)
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NOMI)
-      .then((cache) => {
-        // addAll xato bersa ham davom etishi uchun (rasm yo'q bo'lsa sayt buzilmasligi uchun)
-        return Promise.allSettled(
-          STATIK_FAYLLAR.map(url => cache.add(url))
-        );
-      })
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NOMI).then((cache) => {
+      // Agar rasm fayllari topilmasa ham sayt ishlashi uchun allSettled ishlatamiz
+      return Promise.allSettled(
+        STATIK_FAYLLAR.map(url => cache.add(url))
+      );
+    }).then(() => self.skipWaiting())
   );
 });
 
-// 2. ACTIVATE (Eski keshlarni tozalash va yangisini yoqish)
+// 2. ACTIVATE (Eski keshlarni tozalash)
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => {
-        return Promise.all(
-          keys.map((key) => {
-            if (key !== CACHE_NOMI) {
-              return caches.delete(key);
-            }
-          })
-        );
-      })
-      .then(() => self.clients.claim())
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NOMI) {
+            return caches.delete(key); // v1 ni o'chiradi
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
-// 3. FETCH (So'rovlarni ushlab qolish)
+// 3. FETCH (So'rovlarni boshqarish)
 self.addEventListener("fetch", (event) => {
   const url = event.request.url;
 
@@ -56,14 +50,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Boshqa statik fayllar uchun: Avval keshdan qidiramiz (Cache-First)
+  // Statik fayllar uchun: Avval keshdan qidiramiz
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
 
-      // Agar keshda bo'lmasa, tarmoqdan yuklaymiz va keshga saqlaymiz
       return fetch(event.request).then((response) => {
         if (!response || response.status !== 200 || response.type !== "basic") {
           return response;
@@ -74,9 +67,9 @@ self.addEventListener("fetch", (event) => {
         });
         return response;
       }).catch(() => {
-        // Agar internet bo'lmasa va keshda ham bo'lmasa, offline sahifaga yo'naltirish
+        // Offline bo'lsa va sahifa so'ralsa, index.html ni qaytaramiz
         if (event.request.mode === 'navigate') {
-          return caches.match("./index.html");
+          return caches.match("/Savdo/index.html");
         }
       });
     })
