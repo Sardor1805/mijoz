@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Telefon Savdo - Savatcha</title>
+  
+  <!-- PWA Sozlamalari -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e293b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="logo">📱 Telefon Savdo</div>
+    <button id="savat-btn" class="savat-btn">
+      🛒 <span class="savat-text">Savatcha</span> <span id="savat-soni" class="badge">0</span>
+    </button>
+  </header>
+
+  <!-- ============ ASOSIY QIDIRUV QISMI ============ -->
+  <main class="main-content">
+    <div class="qidiruv-blok">
+      <h2>🔍 Qidiruv</h2>
+      <div class="filtr-qator">
+        <div class="forma-guruh">
+          <label>Tovar turi</label>
+          <select id="qidiruv-tur">
+            <option value="Hammasi">Hammasi</option>
+          </select>
+        </div>
+        <div class="forma-guruh">
+          <label>Telefon modeli</label>
+          <select id="qidiruv-model">
+            <option value="Hammasi">Hammasi</option>
+          </select>
+        </div>
+      </div>
+      <div class="forma-guruh">
+        <label>Qidiruv matni</label>
+        <input type="text" id="qidiruv-matn" placeholder="Kod, model yoki marka...">
+      </div>
+    </div>
+
+    <!-- Natijalar jadvali -->
+    <div class="jadval-wrap">
+      <table class="jadval">
+        <thead>
+          <tr>
+            <th>Kod</th>
+            <th>Model</th>
+            <th>Marka</th>
+            <th>Narx</th>
+            <th>Soni</th>
+            <th>Amal</th>
+          </tr>
+        </thead>
+        <tbody id="qidiruv-tbody">
+          <tr><td colspan="6" class="bosh-qator">Qidiruv natijalari shu yerda...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SAHIFALASH (PAGINATION) -->
+    <div id="pagination" class="pagination">
+      <!-- Sahifa raqamlari JS orqali chiqadi -->
+    </div>
+
+    <!-- MOS MODELLAR -->
+    <h3 style="margin-top: 30px;">🔗 Mos modellar</h3>
+    <div class="jadval-wrap">
+      <table class="jadval">
+        <thead>
+          <tr>
+            <th>Kod</th>
+            <th>Model</th>
+            <th>Marka</th>
+            <th>Narx</th>
+            <th>Soni</th>
+            <th>Amal</th>
+          </tr>
+        </thead>
+        <tbody id="mos-modellar-tbody">
+          <tr><td colspan="6" class="bosh-qator">Mos modellar...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ============ SAVATCHA MODAL OYNASI ============ -->
+  <div id="savat-modal" class="modal-overlay yashirin">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>🛒 Savatchangiz</h2>
+        <button id="savat-yopish" class="close-btn">✖</button>
+      </div>
+
+      <div id="savat-royxat" class="savat-royxat"></div>
+
+      <div class="savat-pastki">
+        <div class="jami-summa">
+          <span>Jami summa:</span>
+          <span id="savat-jami" class="jami-narx">0 so'm</span>
+        </div>
+        <div class="savat-tugmalar">
+          <button id="savat-tozalash" class="btn btn-qizil">🗑️ Tozalash</button>
+          <button id="savat-yakunlash" class="btn btn-asosiy">✅ Yakunlash</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-konteyner" class="toast-konteyner"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
